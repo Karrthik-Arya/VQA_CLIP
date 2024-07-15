@@ -1,0 +1,16 @@
+hidden_size: 512 #512
+dropout_r: 0.15 #0.15
+multi_head: 2
+ff_size: 1024
+# flat_mlp_size: 512
+flat_mlp_size: 512 #512
+flat_glimpses: 1
+flat_out_size: 1024
+layer: 1
+dropout: 0.35 #0.35 last #0.15
+gat_layers: 1
+gat_dropout: 0.35 #0.35 last #0.15
+lstm_layer: 1
+n_class: 1000
+attention: True
+ncs: False

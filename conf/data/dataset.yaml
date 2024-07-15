@@ -1,0 +1,8 @@
+num_epochs: 15 #8 #15
+lr: 5e-3 #1e-2 # 1e-3 -> 64% #5e-3 best 
+seed: 2
+batch_size: 64 #32 > #64 > #128  #64 ->34%
+# path: VQAab
+path: VQAv2
+path_target: VQAab
+cross: VQAab
