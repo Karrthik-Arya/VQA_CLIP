@@ -97,7 +97,7 @@ test_transform = transforms.Compose([
         ])
 
 train_dataset = VQAv2Dataset('datasets/vqa_v2','train','VQAv2',transform=train_transform)
-val_dataset = VQAv2Dataset('datasets/gqa','val','VQAv2',transform=test_transform)
+val_dataset = VQAv2Dataset('datasets/vqa_v2','val','VQAv2',transform=test_transform)
 # cross_dataset = VQAv2Dataset('/raid/biplab/hassan/datasets/vqa_v2','val','VQAv2',transform=test_transform)
 
 train_loader = DataLoader(train_dataset, num_workers=num_workers, batch_size=batch_size, shuffle=False)
@@ -118,6 +118,14 @@ train_accuracy_meter = AverageMeter()
 val_accuracy_meter = AverageMeter()
 # cross_accuracy_meter = AverageMeter()
 best_val_acc = 0
+
+for param in transfer_model.parameters():
+    param.requires_grad = False
+
+for name, module in transfer_model.model.named_modules():
+    if isinstance(module, torch.nn.LayerNorm):
+        for param in module.parameters():
+            param.requires_grad = True
 for i in range(epochs):
 
     transfer_model.train()
@@ -160,18 +168,18 @@ for i in range(epochs):
         # break
     # cross_loss_meter.reset()
     # cross_accuracy_meter.reset()
-    for data in tqdm(cross_loader):
-        img = data["img"]
-        ques = data["question"]
-        ans = data["answer"]
-        img,ans = img.to('cuda'),ans.to('cuda')
+    # for data in tqdm(cross_loader):
+    #     img = data["img"]
+    #     ques = data["question"]
+    #     ans = data["answer"]
+    #     img,ans = img.to('cuda'),ans.to('cuda')
 
-        output = transfer_model(img,ques)
+    #     output = transfer_model(img,ques)
 
-        loss =  torch.nn.CrossEntropyLoss()(output,ans)
-        # cross_loss_meter.update(loss.item(), img.size(0))
-        # Calculate and update accuracy
-        acc1 = accuracy(output, ans, topk=(1,))
+    #     loss =  torch.nn.CrossEntropyLoss()(output,ans)
+    #     # cross_loss_meter.update(loss.item(), img.size(0))
+    #     # Calculate and update accuracy
+    #     acc1 = accuracy(output, ans, topk=(1,))
         # cross_accuracy_meter.update(acc1[0].item(), img.size(0))
         # break
     # print(val_accuracy_meter.avg)
