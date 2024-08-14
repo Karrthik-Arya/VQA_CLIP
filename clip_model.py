@@ -66,7 +66,7 @@ class TransferModel(nn.Module):
 batch_size=128
 num_workers=4
 lr =1e-2
-epochs = 100
+epochs = 50
 momentum = 0.99
 image_size = 224
 
@@ -119,13 +119,6 @@ val_accuracy_meter = AverageMeter()
 # cross_accuracy_meter = AverageMeter()
 best_val_acc = 0
 
-for param in transfer_model.parameters():
-    param.requires_grad = False
-
-for name, module in transfer_model.model.named_modules():
-    if isinstance(module, torch.nn.LayerNorm):
-        for param in module.parameters():
-            param.requires_grad = True
 for i in range(epochs):
 
     transfer_model.train()
