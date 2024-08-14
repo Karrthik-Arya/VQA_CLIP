@@ -65,7 +65,7 @@ class TransferModel(nn.Module):
     
 batch_size=128
 num_workers=4
-lr =1e-2
+lr =1e-3
 epochs = 50
 momentum = 0.99
 image_size = 224
